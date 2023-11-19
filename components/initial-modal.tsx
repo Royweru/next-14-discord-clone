@@ -3,6 +3,8 @@ import React, {useEffect, useState} from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 
+import FileUpload from "./file-upload";
+
 import {
   Dialog,
   DialogContent,
@@ -72,8 +74,22 @@ const InitialModal = () => {
             className=" space-y-8"
           >
             <div className=" space-y-8 px-6">
-              <div className=" flex items-center justify-center text-center">
-                TODO: Image Upload
+              <div className=" flex items-center justify-center text-center w-full">
+               <FormField 
+                  name="imageUrl"
+                  control={form.control}
+                  render={({field})=>(
+                    <FormItem>
+                      <FormControl>
+                        <FileUpload
+                          onChange={field.onChange}
+                          endPoint="serverImage"
+                          value={field.value}
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+               />
               </div>
               <FormField
                 name="name"
