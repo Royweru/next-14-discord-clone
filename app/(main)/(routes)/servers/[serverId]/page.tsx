@@ -1,9 +1,14 @@
+import { ModeToggle } from '@/components/mode-toggle'
 import React from 'react'
 
-const page = () => {
+const RootPage = () => {
   return (
-    <div>SERVER ID PAGE!</div>
+    <div className=' w-full ' >
+        <div className=' text-xl text-yellow-500'>
+            Server ID PAGE
+        </div>
+    </div>
   )
 }
 
-export default page
+export default RootPage
