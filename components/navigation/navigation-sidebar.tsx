@@ -10,6 +10,7 @@ import { ModeToggle } from '../mode-toggle'
 import { UserButton } from '@clerk/nextjs'
 
 const NavigationSidebar:any =async () => {
+ 
   const profile = await currentProfile()
 
   if(!profile){
