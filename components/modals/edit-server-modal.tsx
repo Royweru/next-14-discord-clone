@@ -41,9 +41,11 @@ const formSchema = z.object({
   }),
 });
 const EditServerModal = () => {
-   const {isOpen,onClose,type} = useModal()
+   const {isOpen,onClose,type,data} = useModal()
     const router = useRouter()
+
   const isModalOpen = isOpen && type =="editServer"
+  const {server } = data
   const form = useForm<z.infer<typeof formSchema>>({
     resolver:zodResolver(formSchema),
     defaultValues: {
@@ -51,6 +53,13 @@ const EditServerModal = () => {
       imageUrl: "",
     },
   });
+
+  useEffect(()=>{
+    if(server){
+      form.setValue("name",server.name);
+      form.setValue("imageUrl",server.imageUrl)
+    }
+  },[server,form])
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
@@ -72,9 +81,9 @@ const EditServerModal = () => {
  }  
   return (
     <Dialog open={isModalOpen} onOpenChange={onHandleClose}>
-      <DialogContent className=" p-0 overflow-hidden bg-white">
+      <DialogContent className=" p-0 overflow-hidden dark:bg-slate-200">
         <DialogHeader className=" pt-8 px-6">
-          <DialogTitle className=" text-2xl text-center font-bold">
+          <DialogTitle className=" text-2xl text-center font-bold dark:text-black">
             Customize your server
           </DialogTitle>
           <DialogDescription className=" text-center text-zinc-500">
@@ -128,7 +137,7 @@ const EditServerModal = () => {
             </div>
             <DialogFooter className=" bg-gray-100 px-6 py-4">
                 <Button disabled={isLoading} variant="primary" type="submit">
-                  Edit
+                  Save
                 </Button>
             </DialogFooter> 
           </form>
