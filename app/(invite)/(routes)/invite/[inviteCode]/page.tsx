@@ -35,10 +35,29 @@ const InviteCodePage =async ({
         }
     });
 
-    
-  return (
-    <div>InviteCodePage</div>
-  )
+    if(exsistingServer){
+        return redirect(`/servers/${exsistingServer.id}`)
+    }
+
+    const server = await prisma.server.update({
+        where:{
+            inviteCode:params.inviteCode
+        },
+        data:{
+            members:{
+                create:[
+                    {
+                        profileId:profile.id
+                    }
+                ]
+            }
+        }
+    })
+
+    if(server){
+        return redirect(`/servers/${server.id}`)
+    }
+  return null
 }
 
 export default InviteCodePage
