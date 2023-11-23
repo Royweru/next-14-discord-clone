@@ -63,9 +63,7 @@ const EditServerModal = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.post('/api/servers',values)
-      form.reset()
-      router.refresh()
+      await axios.patch(`/api/servers/${server?.id}`,values)
       onClose()
       window.location.reload()
     } catch (error) {
@@ -75,12 +73,9 @@ const EditServerModal = () => {
 
   const isLoading = form.formState.isSubmitting;
 
- const onHandleClose = ()=>{
-  form.reset()
-  onClose()
- }  
+
   return (
-    <Dialog open={isModalOpen} onOpenChange={onHandleClose}>
+    <Dialog open={isModalOpen} onOpenChange={onClose}>
       <DialogContent className=" p-0 overflow-hidden dark:bg-slate-200">
         <DialogHeader className=" pt-8 px-6">
           <DialogTitle className=" text-2xl text-center font-bold dark:text-black">
