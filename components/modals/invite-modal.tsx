@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
+
 
 import axios from "axios";
 import * as z from "zod";
@@ -9,12 +9,11 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "../ui/dialog";
 
-import { useForm } from "react-hook-form";
+
 
 import { useRouter } from "next/navigation";
 import { useModal } from "@/hooks/use-modal-store";
@@ -24,21 +23,13 @@ import { Button } from "../ui/button";
 import { Check, Copy, RefreshCw } from "lucide-react";
 import { useOrigin } from "@/hooks/use-origin";
 
-const formSchema = z.object({
-  name: z.string().min(1, {
-    message: "server name is required",
-  }),
-  imageUrl: z.string().min(1, {
-    message: "image url is required",
-  }),
-});
+
 const InviteModal = () => {
   const { isOpen, onOpen, onClose, type, data } = useModal();
   const [copied, setCopied] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const origin = useOrigin();
 
-  const router = useRouter();
   const isModalOpen = isOpen && type == "invite";
   const { server } = data;
 
