@@ -34,7 +34,7 @@ export async function PATCH(
                             }
                         },
                         data:{
-                            role
+                            role:role
                         }
                     }
                 }
