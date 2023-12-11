@@ -5,7 +5,7 @@ interface UserAvatarProps{
     className?:string
 }
 
-const UseAvatar:React.FC<UserAvatarProps> = ({
+const UserAvatar:React.FC<UserAvatarProps> = ({
     src,
     className
 }) => {
@@ -14,4 +14,4 @@ const UseAvatar:React.FC<UserAvatarProps> = ({
   )
 }
 
-export default UseAvatar
+export default UserAvatar

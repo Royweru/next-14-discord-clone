@@ -1,8 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 
-
-
+import UserAvatar from "../user-avatar";
 
 import {
   Dialog,
@@ -39,7 +38,7 @@ const MembersModal = () => {
           <DialogTitle className=" text-2xl text-center font-bold text-zinc-700">
            Manage members
           </DialogTitle>
-          <DialogDescription>
+          <DialogDescription className=" text-center text-zinc-500">
            {server?.members?.length} members
         </DialogDescription>
         </DialogHeader>
