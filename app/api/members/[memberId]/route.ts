@@ -9,6 +9,7 @@ export async function PATCH(
         const{searchParams} = new URL(req.url)
         const profile = await currentProfile()
          const serverId = searchParams.get("serverId")
+         const{role} = await req.json()
         if(!profile){
             return new NextResponse("Unauthorized",{status:401})
         }
