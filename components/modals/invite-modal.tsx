@@ -1,9 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 
-
 import axios from "axios";
-import * as z from "zod";
 
 import {
   Dialog,
@@ -14,15 +12,12 @@ import {
 } from "../ui/dialog";
 
 
-
-import { useRouter } from "next/navigation";
 import { useModal } from "@/hooks/use-modal-store";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Check, Copy, RefreshCw } from "lucide-react";
 import { useOrigin } from "@/hooks/use-origin";
-
 
 const InviteModal = () => {
   const { isOpen, onOpen, onClose, type, data } = useModal();
@@ -47,7 +42,9 @@ const InviteModal = () => {
   const onNew = async () => {
     try {
       setIsLoading(true);
-      const response = await axios.patch(`/api/servers/${server?.id}/invite-code`);
+      const response = await axios.patch(
+        `/api/servers/${server?.id}/invite-code`
+      );
       onOpen("invite", { server: response.data });
     } catch (error) {
       console.log(error);
