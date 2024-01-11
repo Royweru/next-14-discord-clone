@@ -4,12 +4,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import axios from 'axios'
 import * as z from "zod";
-
+import qs from 'query-string'
 
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
+ 
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -25,32 +25,53 @@ import {
 import { useForm } from "react-hook-form";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useModal } from "@/hooks/use-modal-store";
+
+import {
+  Select,
+  SelectContent,
+  SelectTrigger,
+  SelectItem,
+  SelectValue
+} from "../ui/select"
+import { ChannelType } from "@prisma/client";
 
 const formSchema = z.object({
   name: z.string().min(1, {
     message: "server name is required",
-  }),
-  imageUrl: z.string().min(1, {
-    message: "image url is required",
-  }),
+  }).refine(
+    name=>name !=="general",
+    {
+      message:"Channel name cannot be 'general'"
+    }
+  ),
+  type:z.nativeEnum(ChannelType)
+   
 });
 export const CreateChannelModal = () => {
    const {isOpen,onClose,type} = useModal()
     const router = useRouter()
+    const params = useParams()
   const isModalOpen = isOpen && type =="createChannel"
   const form = useForm<z.infer<typeof formSchema>>({
     resolver:zodResolver(formSchema),
     defaultValues: {
       name: "",
-      imageUrl: "",
+      type:ChannelType.TEXT,
     },
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.post('/api/servers',values)
+
+      const url = qs.stringifyUrl({
+        url:"/api/channels",
+        query:{
+          serverId:params?.serverId
+        }
+      })
+      await axios.post(url ,values)
       form.reset()
       router.refresh()
       onClose()
@@ -102,6 +123,34 @@ export const CreateChannelModal = () => {
                   </FormItem>
                 )}
               />
+              <FormField
+               name="type"
+               control={form.control}
+               render={({field})=>(
+                <FormItem>
+                  <FormLabel>
+                    Channel Type
+                  </FormLabel>
+                    <Select value={field.value} onValueChange={field.onChange} disabled={isLoading}>
+                      <FormControl>
+                         <SelectTrigger 
+                         className=" bg-zinc-300/50 border-0 focus:ring-0 
+                         ring-offset-0 ring-0 focus:ring-offset-0 outline-none"
+                         >
+                          <SelectValue placeholder="Select a channel type"/>
+                         </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {Object.values(ChannelType).map((type)=>(
+                          <SelectItem key={type} value={type} className=" capitalize">
+                            {type.toLowerCase()}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                </FormItem>
+               )}
+               />
             </div>
             <DialogFooter className=" bg-gray-100 px-6 py-4">
                 <Button disabled={isLoading} variant="primary" type="submit">
