@@ -19,7 +19,7 @@ import { useOrigin } from "@/hooks/use-origin";
 import { useParams, useRouter } from "next/navigation";
 
 export const DeleteChannelModal = () => {
-  const { isOpen, onOpen, onClose, type, data } = useModal();
+  const { isOpen, onClose, type, data } = useModal();
   const params = useParams()
 const router = useRouter()
   const [isLoading, setIsLoading] = useState(false);

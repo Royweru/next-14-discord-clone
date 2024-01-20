@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import prisma from "@/lib/prismadb";
 import { MemberRole } from "@prisma/client";
 
-export async function DElETE(
+export async function DELETE(
   req: Request,
   { params }: { params: { channelId: string } }
 ) {
@@ -48,7 +48,7 @@ export async function DElETE(
     });
     return NextResponse.json(server);
   } catch (error) {
-    console.log("[CHANNEL_ID_DELETE", error);
+    console.error( error);
     return new NextResponse("Internal error", { status: 500 });
   }
 }
