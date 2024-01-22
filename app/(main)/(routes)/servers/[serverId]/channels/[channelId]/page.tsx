@@ -1,9 +1,50 @@
-import React from 'react'
+import React from "react";
 
-const ChannelIdPage = () => {
-  return (
-    <div>ChannelIdPage</div>
-  )
+import { RedirectToSignIn, redirectToSignIn } from "@clerk/nextjs";
+
+import { currentProfile } from "@/lib/current-profile";
+
+import prisma from "@/lib/prismadb";
+import { redirect } from "next/navigation";
+import { ChatHeader } from "@/components/chat/chat-header";
+interface ChannelIdPageProps {
+  params: {
+    serverId: string;
+    channelId: string;
+  };
 }
 
-export default ChannelIdPage
+const ChannelIdPage = async ({ params }: ChannelIdPageProps) => {
+  const profile = await currentProfile();
+
+  if (!profile) {
+    return redirectToSignIn();
+  }
+
+  const channel = await prisma.channel.findUnique({
+    where: {
+      id: params.channelId,
+    },
+  });
+  const member = await prisma.member.findFirst({
+    where: {
+      serverId: params.serverId,
+      profileId: profile.id,
+    },
+  });
+
+  if (!channel || !member) {
+    redirect("/");
+  }
+  return (
+    <div className=" bg-white dark:bg-[#313338] flex flex-col h-full">
+      <ChatHeader
+       name={channel.name}
+       serverId={channel.serverId}
+       type="channel"
+      />
+    </div>
+  );
+};
+
+export default ChannelIdPage;
