@@ -7,6 +7,7 @@ import { currentProfile } from "@/lib/current-profile";
 import prisma from "@/lib/prismadb";
 import { redirect } from "next/navigation";
 import { ChatHeader } from "@/components/chat/chat-header";
+import { ChatInput } from "@/components/chat/chat-input";
 interface ChannelIdPageProps {
   params: {
     serverId: string;
@@ -43,6 +44,10 @@ const ChannelIdPage = async ({ params }: ChannelIdPageProps) => {
        serverId={channel.serverId}
        type="channel"
       />
+      <div className=" flex-1 text-xl text-yellow-400">
+       Future Messages!
+      </div>
+      <ChatInput />
     </div>
   );
 };
